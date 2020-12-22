@@ -8,8 +8,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CategoryUpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ("name",)
+# class CategoryUpdateSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Category
+#         fields = ("name",)
 

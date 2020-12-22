@@ -7,7 +7,8 @@ from orders.models.order_item import OrderItem
 
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ('product', 'name', 'price', 'off')
-    
+    empty_value_display = '-empty-'
+
 
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('order_number', 'total_price', 'total_off', 'user_name', 'first_name', 'last_name')
