@@ -1,4 +1,4 @@
-
+from django.http import Http404
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins, viewsets, filters
 from rest_framework.decorators import action
@@ -30,14 +30,16 @@ class ProductView(mixins.ListModelMixin,
     search_fields = ['name']
     permission_classes = (AllowAny,)
 
-    def get_permissions(self):
-        """
-        Instantiates and returns the list of permissions that this view requires.
-        """
-        if self.action == 'list' or 'Retrieve':
-            permission_classes = [AllowAny]
-        else:
-            permission_classes = [IsAuthenticated]
-        return [permission() for permission in permission_classes]
+
+
+    # def get_permissions(self):
+    #     """
+    #     Instantiates and returns the list of permissions that this view requires.
+    #     """
+    #     if self.action == 'list' or 'Retrieve':
+    #         permission_classes = [AllowAny]
+    #     else:
+    #         permission_classes = [IsAuthenticated]
+    #     return [permission() for permission in permission_classes]
 
 

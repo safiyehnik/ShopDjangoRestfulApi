@@ -23,7 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     re_path(r'api/v1/', include('products.urls')),
-    re_path(r'api/v1', include('users.urls')),
+    re_path(r'api/v1/', include('users.urls')),
+    re_path(r"api/v1/", include("orders.urls")),
+
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

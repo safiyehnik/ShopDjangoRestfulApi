@@ -1,5 +1,5 @@
 from users.views.sign_up_view import SignUpView
-from django.urls import  re_path
+from django.urls import re_path
 
 
 urlpatterns = [
