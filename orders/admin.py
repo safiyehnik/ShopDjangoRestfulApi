@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
-    extra = 0
+    extra = 2
 
     def has_add_permission(self, request, obj):
         return False
@@ -21,7 +21,7 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     inlines = [OrderItemInline]
-
+    extra = 3
     list_display_links = ('order_number',)
     readonly_fields = ('order_number',)
     list_display = ('row', 'order_number', 'total_cost', 'total_off', 'phone_number', 'full_name')

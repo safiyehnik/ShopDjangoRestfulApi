@@ -33,15 +33,15 @@ class OrderView(mixins.ListModelMixin,
     # filterset_fields = ['order_number']
     # search_fields = ['order_number']
 
-    @action(detail=True, methods=["GET"])
-    def items(self, request, pk, *args, **kwargs):
-
-        queryset = self.filter_queryset(OrderItem.objects.filter(order_id=pk))
-
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = OrderItemSerializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = OrderItemSerializer(queryset, many=True)
-        return Response(serializer.data)
+    # @action(detail=True, methods=["GET"])
+    # def items(self, request, pk, *args, **kwargs):
+    #
+    #     queryset = self.filter_queryset(OrderItem.objects.filter(order_id=pk))
+    #
+    #     page = self.paginate_queryset(queryset)
+    #     if page is not None:
+    #         serializer = OrderItemSerializer(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #
+    #     serializer = OrderItemSerializer(queryset, many=True)
+    #     return Response(serializer.data)
