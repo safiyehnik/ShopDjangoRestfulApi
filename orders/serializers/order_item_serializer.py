@@ -5,4 +5,4 @@ from orders.models.order_item import OrderItem
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
-        fields = ("product",)
+        fields = ["order", "product", "name", "price", "off", "quantity"]
