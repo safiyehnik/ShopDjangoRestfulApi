@@ -1,17 +1,29 @@
-from rest_framework import status
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, generics, filters
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.views import APIView
 from orders.models.order import Order
 from orders.models.order_item import OrderItem
 from orders.serializers.order_serializer import OrderSerializer
 from products.models.product import Product
 
 
-class OrderItemView(APIView):
-    permission_classes = (AllowAny,)
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
-    def post(self, request):
+
+class OrderItemView(generics.GenericAPIView):
+    permission_classes = (AllowAny,)
+    pagination_class = StandardResultsSetPagination
+    serializer_class = OrderSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['phone_number']
+    search_fields = ['phone_number']
+
+    def post(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return Response(data={"error": "User is not login"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -39,7 +51,6 @@ class OrderItemView(APIView):
 
         total_cost_with_off = 0
         total_cost_without_off = 0
-        total_off = 0
 
         for product_obj, product_quantity in zip(product_obj_list, product_quantity_list):
             product_price = product_obj.price
@@ -70,9 +81,22 @@ class OrderItemView(APIView):
         serializer = OrderSerializer(instance=order_obj)
         return Response(data=serializer.data, status=status.HTTP_201_CREATED)
 
-    def get(self, request):
-        serializer = OrderSerializer(instance=Order.objects.all(), many=True)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+    def get(self, request, *args, **kwargs):
+
+        if not request.user.is_authenticated:
+            return Response(data={"error": "User is not login"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        queryset = self.filter_queryset(Order.objects.filter(phone_number=request.user.phone_number))
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+        # serializer = OrderSerializer(instance=Order.objects.all(), many=True)
+        # return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 
     # def get_object(self, product_id):

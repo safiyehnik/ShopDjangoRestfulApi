@@ -30,6 +30,15 @@ class ProductView(mixins.ListModelMixin,
     search_fields = ['name']
     permission_classes = (AllowAny,)
 
+    @action(detail=False, methods=["GET"])
+    def new(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(Product.objects.all().order_by("-created_at")[:10])
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+
+
 
 
     # def get_permissions(self):

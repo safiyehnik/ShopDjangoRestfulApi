@@ -11,7 +11,7 @@ router.register(r'categories', CategoryView, basename='category_url')
 urlpatterns = [
     # re_path(r'categories/?$', CategoryView.as_view()),
     # re_path(r'categories/(?P<pk>\d+)/?$', CategoryDetailView.as_view()),
-    # re_path(r'categories/(?P<pk>\d+)/products/?$', ProductView.as_view()),
+    # re_path(r'categories/(?P<pk>\d+)/products/?$', CategoryView.as_view()),
 
 ]
 urlpatterns += router.urls
